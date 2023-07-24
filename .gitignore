@@ -21,7 +21,6 @@ media
 *.swp
 *.swo
 *.swn
-settings.py
 
 # Environment files
 .env
