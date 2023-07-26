@@ -124,9 +124,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'staticfiles'
 ]
+STATIC_ROOT = BASE_DIR / 'static'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'mediafiles'
+MEDIA_URL = '/mediafiles/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles/')
 
 
 LOGIN_REDIRECT_URL = reverse_lazy('homepage')

@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
 
-</body>
-</html>
+{% block content %}
+    <h1>Edit Profile</h1>
+    <img src="{% if not user.profile.is_default_image %}
+                {{ user.profile.profile_picture.url }}
+              {% else %}
+                {% static 'images/default.jpg' %}
+              {% endif %}" alt="Profile picture">
+
+    <a href="{% url 'password_change' %}">Change password</a>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {% for field in form %}
+            {% if not field.name == 'profile_picture' %}
+                {{ field.as_p }}
+            {% else %}
+                {% if field.value %}
+                    <input type="checkbox" name="profile_picture_clear" id="profile_picture_clear">
+                    <label for="profile_picture_clear">Remove current picture</label>
+                    <br>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <button type="submit">Save changes</button>
+    </form>
+{% endblock %}

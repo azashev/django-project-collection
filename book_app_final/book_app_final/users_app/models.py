@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth import models as auth_models
+from django.core.validators import FileExtensionValidator
 from django.db import models
 
 
@@ -25,33 +26,24 @@ class CustomUser(AbstractBaseUser, auth_models.PermissionsMixin):
 
     username = models.CharField(
         max_length=30,
-        unique=True
+        unique=True,
+        help_text='Required. Please make sure to enter a valid username',
     )
 
     email = models.EmailField(
-        unique=True
-    )
-
-    first_name = models.CharField(
-        max_length=30,
-        blank=True
-    )
-
-    last_name = models.CharField(
-        max_length=30,
-        blank=True
+        unique=True,
     )
 
     is_active = models.BooleanField(
-        default=True
+        default=True,
     )
 
     is_staff = models.BooleanField(
-        default=False
+        default=False,
     )
 
     is_superuser = models.BooleanField(
-        default=False
+        default=False,
     )
 
     objects = CustomUserManager()
@@ -62,21 +54,61 @@ class CustomUser(AbstractBaseUser, auth_models.PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(
-        CustomUser,
-        on_delete=models.CASCADE
+        'CustomUser',
+        on_delete=models.CASCADE,
+    )
+
+    first_name = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
+
+    last_name = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
     )
 
     bio = models.TextField(
         max_length=500,
-        blank=True
+        blank=True,
     )
 
     location = models.CharField(
         max_length=30,
-        blank=True
+        blank=True,
     )
 
     birth_date = models.DateField(
         null=True,
-        blank=True
+        blank=True,
     )
+
+    profile_picture = models.ImageField(
+        upload_to='profile_pics/',
+        validators=[FileExtensionValidator(
+            allowed_extensions=[
+                'jpg', 'jpeg', 'png'
+            ]
+        )],
+        default='profile_pics/default.jpg'
+    )
+
+    is_default_image = models.BooleanField(
+        default=True,
+    )
+
+
+class Shelf(models.Model):
+    user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE
+    )
+
+    books = models.ManyToManyField(
+        'books_app.Book'
+    )
+
+    def __str__(self):
+        return f"{self.user.username}'s Shelf"
