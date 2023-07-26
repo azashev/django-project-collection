@@ -60,14 +60,14 @@ class Profile(models.Model):
 
     first_name = models.CharField(
         max_length=30,
-        null=True,
         blank=True,
+        default="",
     )
 
     last_name = models.CharField(
         max_length=30,
-        null=True,
         blank=True,
+        default="",
     )
 
     bio = models.TextField(
@@ -98,6 +98,12 @@ class Profile(models.Model):
     is_default_image = models.BooleanField(
         default=True,
     )
+
+    def get_first_name(self):
+        return self.first_name if self.first_name is not None else ""
+
+    def get_last_name(self):
+        return self.last_name if self.last_name is not None else ""
 
 
 class Shelf(models.Model):

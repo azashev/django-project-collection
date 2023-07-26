@@ -13,20 +13,33 @@
     <a href="{% url 'password_change' %}">Change password</a>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ user_form.as_p }}
-        {% for field in form %}
-            {% if not field.name == 'profile_picture' %}
-                {{ field.as_p }}
+        {% for field in user_form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="error">{{ error }}</div>
+                {% endfor %}
+            {% endif %}
+            {% if field.name == 'first_name' or field.name == 'last_name' %}
+                <p>{{ field.label }} : {{ field }}</p>
             {% else %}
-                {% if field.value %}
-                    <input type="checkbox" name="profile_picture_clear" id="profile_picture_clear">
-                    <label for="profile_picture_clear">Remove current picture</label>
-                    <br>
-                {% else %}
-                    {{ field }}
-                {% endif %}
+                <p>{{ field.label }} : {{ field }}</p>
             {% endif %}
         {% endfor %}
+        {% for field in form %}
+            {% if not field.name == 'profile_picture' %}
+                <p>{{ field.label }} : {{ field }}</p>
+            {% endif %}
+        {% endfor %}
+        {% if form.profile_picture.value and not user.profile.is_default_image %}
+            <input type="checkbox" name="profile_picture_clear" id="profile_picture_clear">
+            <label for="profile_picture_clear">Remove current picture</label>
+            <br>
+        {% endif %}
+        <label for="{{ form.profile_picture.auto_id }}">Upload a profile picture (.jpg, .jpeg, or .png):</label>
+        <br>
+        <input type="file" name="{{ form.profile_picture.name }}" id="{{ form.profile_picture.auto_id }}"
+               accept=".jpg, .jpeg, .png">
+        <br>
         <button type="submit">Save changes</button>
     </form>
 {% endblock %}

@@ -95,6 +95,7 @@ class ProfileUpdateView(auth_mixins.LoginRequiredMixin, TemplateView):
             data["user_form"] = CustomUserUpdateForm(instance=self.request.user)
             data["form"] = ProfileForm(instance=self.request.user.profile)
         data["profile"] = self.request.user.profile
+
         return data
 
     def post(self, request, *args, **kwargs):

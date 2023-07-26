@@ -71,3 +71,18 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'bio', 'location', 'birth_date', 'profile_picture']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.is_default_image:
+            self.fields['profile_picture'].widget = forms.FileInput(
+                attrs={
+                    'accept': '.jpg, .jpeg, .png'
+                }
+            )
+        else:
+            self.fields['profile_picture'].widget = forms.ClearableFileInput(
+                attrs={
+                    'accept': '.jpg, .jpeg, .png'
+                }
+            )
