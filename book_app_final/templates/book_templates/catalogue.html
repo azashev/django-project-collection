@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Book Catalogue</h1>
+    <ul>
+        {% for book in books %}
+            <li>
+                <h2><a href="{% url 'book_details' pk=book.pk %}">{{ book.title }}</a></h2>
+                <p>{{ book.description }}</p>
+                <p>Author: {{ book.author }}
+                    <img class="book-image" src="{{ book.book_image }}" alt="{{ book.title }}">
+                <p>Added by: {{ book.created_by }}</p>
+            </li>
+            <hr>
+            <br>
+        {% empty %}
+            <li>No books available.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

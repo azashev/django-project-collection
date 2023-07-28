@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{{ book.title }}</h2>
+    <div>
+        <p>Title: {{ book.title }}</p>
+        <p>Description: {{ book.description }}</p>
+        <p>Author: {{ book.author }}</p>
+        <img class="book-image" src="{{ book.book_image }}" alt="{{ book.title }} image">
+    </div>
+
+    <h2>Reviews:</h2>
+    {% for review in reviews %}
+        <div>
+            <p>{{ review.created_at|date:"d/m/Y, h:i A" }}</p>
+            <p>{{ review.user.username }}: {{ review.review_text }}</p>
+            <br>
+        </div>
+    {% empty %}
+        <p>No reviews yet</p>
+    {% endfor %}
+
+    <h2>Leave a review:</h2>
+    <form action="{% url 'book_details' pk=book.pk %}" method="post">
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <input type="submit" value="Submit Review">
+    </form>
+{% endblock %}

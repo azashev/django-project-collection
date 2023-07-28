@@ -3,6 +3,8 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView, ListView, DeleteView, TemplateView
 from django.contrib.auth import views as auth_views, forms as auth_forms, mixins as auth_mixins, login
 
+from book_app_final.books_app.models import Book
+from book_app_final.reviews_app.models import Review
 from book_app_final.users_app.forms import SignUpForm, ProfileForm, CustomUserUpdateForm
 from book_app_final.users_app.models import Profile, CustomUser, Shelf
 
@@ -129,6 +131,13 @@ class ProfileDeleteView(auth_mixins.LoginRequiredMixin, DeleteView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if 'delete_content' in request.POST:
+            Book.objects.filter(created_by=self.object).delete()
+            Review.objects.filter(user=self.object).delete()
+        self.object.delete()
 
 
 class PasswordChangeView(auth_mixins.LoginRequiredMixin, auth_views.PasswordChangeView):
