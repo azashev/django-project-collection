@@ -10,9 +10,24 @@ from book_app_final.reviews_app.models import Review
 @login_required
 def book_catalogue(request):
     books = Book.objects.all()
+    books_with_genres = []
+
+    for book in books:
+        book_genres = ", ".join([genre.genre_name for genre in book.genres.all()])
+        books_with_genres.append({
+            'title': book.title,
+            'image': book.book_image,
+            'description': book.description,
+            'genres': book_genres,
+            'author': book.author,
+            'pk': book.pk,
+            'added_by': book.created_by.username,
+        })
+
     context = {
-        'books': books,
+        'books': books_with_genres,
     }
+
     return render(request, 'book_templates/catalogue.html', context)
 
 
@@ -25,6 +40,7 @@ def book_add(request):
         user = request.user
         book.created_by = user
         book.save()
+        form.save_m2m()
         return redirect('book_catalogue')
 
     context = {
@@ -58,7 +74,27 @@ def book_details(request, pk):
 
 @login_required
 def book_edit(request, pk):
-    pass
+    book = Book.objects.get(pk=pk)
+
+    if not book.created_by == request.user:
+        return redirect('my_books')
+
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form_instance = form.save(commit=False)
+            form_instance.save()
+            form.save_m2m()
+            return redirect('my_books')
+    else:
+        form = BookForm(instance=book)
+
+    context = {
+        'book': book,
+        'form': form,
+    }
+
+    return render(request, 'book_templates/book_edit.html', context)
 
 
 @login_required

@@ -1,7 +1,7 @@
 from django.urls import path
 
 from book_app_final.users_app.views import ProfileView, ProfileUpdateView, ShelfView, ProfileDeleteView, \
-    PasswordChangeView, PasswordChangedView
+    PasswordChangeView, PasswordChangedView, ProfileBooksView
 
 urlpatterns = [
     path('', ProfileView.as_view(), name='profile'),
@@ -10,4 +10,5 @@ urlpatterns = [
     path('shelf/', ShelfView.as_view(), name='shelf'),
     path('password-change/', PasswordChangeView.as_view(), name='password_change'),
     path('password-changed/', PasswordChangedView.as_view(), name='password_changed'),
+    path('my-books/', ProfileBooksView.as_view(), name='my_books'),
 ]

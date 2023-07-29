@@ -1,5 +1,7 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import DetailView, FormView, ListView, DeleteView, TemplateView
 from django.contrib.auth import views as auth_views, forms as auth_forms, mixins as auth_mixins, login
 
@@ -134,10 +136,10 @@ class ProfileDeleteView(auth_mixins.LoginRequiredMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if 'delete_content' in request.POST:
-            Book.objects.filter(created_by=self.object).delete()
-            Review.objects.filter(user=self.object).delete()
+        Book.objects.filter(created_by=self.object).delete()
+        Review.objects.filter(user=self.object).delete()
         self.object.delete()
+        return redirect(self.success_url)
 
 
 class PasswordChangeView(auth_mixins.LoginRequiredMixin, auth_views.PasswordChangeView):
@@ -153,3 +155,28 @@ class PasswordChangedView(auth_mixins.LoginRequiredMixin, TemplateView):
 class ShelfView(auth_mixins.LoginRequiredMixin, ListView):
     model = Shelf
     template_name = 'shelf_templates/user_shelf.html'
+
+
+class ProfileBooksView(auth_mixins.LoginRequiredMixin, View):
+    template_name = 'user_templates/my_books.html'
+
+    def get(self, request, *args, **kwargs):
+        books = Book.objects.filter(created_by=self.request.user)
+        books_with_genres = []
+
+        for book in books:
+            book_genres = ", ".join([genre.genre_name for genre in book.genres.all()])
+            books_with_genres.append({
+                'title': book.title,
+                'image': book.book_image,
+                'description': book.description,
+                'genres': book_genres,
+                'author': book.author,
+                'pk': book.pk,
+            })
+
+        context = {
+            'books': books_with_genres,
+        }
+
+        return render(request, self.template_name, context)

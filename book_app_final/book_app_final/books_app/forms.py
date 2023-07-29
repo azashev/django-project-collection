@@ -10,7 +10,6 @@ class BookForm(forms.ModelForm):
         labels = {
             'author': 'Author',
             'book_image': 'Image',
-            '': '',
         }
 
         widgets = {

@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from book_app_final.users_app.models import CustomUser
+
+
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
+    pass

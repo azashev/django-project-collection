@@ -5,11 +5,12 @@
     <ul>
         {% for book in books %}
             <li>
-                <h2><a href="{% url 'book_details' pk=book.pk %}">{{ book.title }}</a></h2>
-                <p>{{ book.description }}</p>
-                <p>Author: {{ book.author }}
-                    <img class="book-image" src="{{ book.book_image }}" alt="{{ book.title }}">
-                <p>Added by: {{ book.created_by }}</p>
+                <h2>Title: <a href="{% url 'book_details' pk=book.pk %}">{{ book.title }}</a></h2>
+                <p>Description: {{ book.description }}</p>
+                <p>Genre: {{ book.genres }}</p>
+                <p>Author: {{ book.author }}</p>
+                <img class="book-image" src="{{ book.image }}" alt="{{ book.title }}">
+                <p>Added by: {{ book.added_by }}</p>
             </li>
             <hr>
             <br>

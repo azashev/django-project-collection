@@ -6,14 +6,22 @@
         <p>Title: {{ book.title }}</p>
         <p>Description: {{ book.description }}</p>
         <p>Author: {{ book.author }}</p>
+        <p>Genre: {{ book.genre }}</p>
         <img class="book-image" src="{{ book.book_image }}" alt="{{ book.title }} image">
     </div>
+
+    {% if book.created_by == request.user %}
+        <p><a href="{% url 'book_edit' pk=book.pk %}">Edit book</a></p>
+        <p><a href="{% url 'book_delete' pk=book.pk %}">Delete book</a></p>
+    {% endif %}
 
     <h2>Reviews:</h2>
     {% for review in reviews %}
         <div>
             <p>{{ review.created_at|date:"d/m/Y, h:i A" }}</p>
-            <p>{{ review.user.username }}: {{ review.review_text }}</p>
+            <p>{{ review.user.username }}: {{ review.review_text }} {% if user == review.user %}
+                <a href="{% url 'review_delete' review.id %}?next={{ request.path }}">X</a>
+            {% endif %}</p>
             <br>
         </div>
     {% empty %}

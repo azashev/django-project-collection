@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Delete Account</h2>
-  <p>Are you sure you want to delete your profile?</p>
-  <form method="POST">
+    <h2>Delete Account</h2>
+    <p>Are you sure you want to delete your account? This will also delete all the content associated with your
+        profile</p>
+    <form method="POST">
         {% csrf_token %}
-        <label for="delete_content">
-            <input type="checkbox" id="delete_content" name="delete_content">
-            Also delete all books and reviews you've added?
-        </label>
         <button type="submit">Delete Account</button>
     </form>
-  <a href="{% url 'profile' %}">Cancel</a>
+    <a href="{% url 'profile' %}">Cancel</a>
 {% endblock %}

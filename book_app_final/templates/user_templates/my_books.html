@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2>My Books</h2>
+    {% for book in books %}
+        <div>
+            <p>Title: <a href="{% url 'book_details' pk=book.pk %}">{{ book.title }}</a></p>
+            <img class="book-image" src="{{ book.image }}" alt="{{ book.title }} image">
+            <p>Description: {{ book.description }}</p>
+            <p>Genre: {{ book.genres }}</p>
+            <p>Author: {{ book.author }}
+            <p><a href="{% url 'book_edit' pk=book.pk %}">Edit book</a></p>
+            <p><a href="{% url 'book_delete' pk=book.pk %}">Delete book</a></p>
+        </div>
+        <hr>
+        <br>
+    {% empty %}
+        <p>You haven't added any books yet</p>
+    {% endfor %}
+{% endblock %}

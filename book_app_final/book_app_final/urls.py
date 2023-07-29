@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('book_app_final.core_app.urls')),
     path('profile/', include('book_app_final.users_app.urls')),
     path('books/', include('book_app_final.books_app.urls')),
+    path('reviews/', include('book_app_final.reviews_app.urls')),
 ]
 
 if settings.DEBUG:
