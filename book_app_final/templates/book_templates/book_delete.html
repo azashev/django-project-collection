@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="{% url 'book_delete' pk=book.pk %}" method="POST">
+        {% csrf_token %}
+        <p>Are you sure you want to delete the book "{{ book.title }}"?</p>
+        <input type="submit" value="Confirm">
+        <a href="{% url 'book_details' pk=book.pk %}">Cancel</a>
+    </form>
+{% endblock %}

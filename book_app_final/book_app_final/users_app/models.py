@@ -109,11 +109,13 @@ class Profile(models.Model):
 class Shelf(models.Model):
     user = models.OneToOneField(
         CustomUser,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='shelf',
     )
 
     books = models.ManyToManyField(
-        'books_app.Book'
+        'books_app.Book',
+        blank=True,
     )
 
     def __str__(self):

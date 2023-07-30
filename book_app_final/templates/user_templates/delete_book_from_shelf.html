@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <h3>Are you sure you want to remove this book from your shelf?</h3>
+        <input type="submit" value="Delete">
+    </form>
+    <a href="{% url 'shelf' %}">Cancel</a>
+{% endblock %}

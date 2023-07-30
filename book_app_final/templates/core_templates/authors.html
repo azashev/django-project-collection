@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    {% for author in object_list %}
+        <div>
+            <a href="{% url 'author_books' slug=author.slug %}">{{ author.slug }}</a>
+        </div>
+    {% endfor %}
+    <button onclick="goBack()">Back</button>
+{% endblock %}

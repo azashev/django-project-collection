@@ -5,6 +5,6 @@
     <form action="{% url 'book_edit' pk=book.pk %}" method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Submit</button>
+        <button type="submit">Save</button>
     </form>
 {% endblock %}

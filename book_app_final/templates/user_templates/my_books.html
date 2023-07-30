@@ -9,7 +9,7 @@
             <img class="book-image" src="{{ book.image }}" alt="{{ book.title }} image">
             <p>Description: {{ book.description }}</p>
             <p>Genre: {{ book.genres }}</p>
-            <p>Author: {{ book.author }}
+            <p>Author: <a href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a></p>
             <p><a href="{% url 'book_edit' pk=book.pk %}">Edit book</a></p>
             <p><a href="{% url 'book_delete' pk=book.pk %}">Delete book</a></p>
         </div>
@@ -18,4 +18,6 @@
     {% empty %}
         <p>You haven't added any books yet</p>
     {% endfor %}
+    <button onclick="goBack()">Back</button>
+
 {% endblock %}

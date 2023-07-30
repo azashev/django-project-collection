@@ -1,6 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {#  Filtering  #}
+    <form method="GET">
+        {{ form.author.label_tag }}
+        {{ form.author }}
+
+        {{ form.genre.label_tag }}
+        {{ form.genre }}
+
+        {{ form.sort_by.label_tag }}
+        {{ form.sort_by }}
+
+        <button type="submit">Apply</button>
+    </form>
+
+
+    {#  Catalogue  #}
     <h1>Book Catalogue</h1>
     <ul>
         {% for book in books %}
@@ -8,7 +24,7 @@
                 <h2>Title: <a href="{% url 'book_details' pk=book.pk %}">{{ book.title }}</a></h2>
                 <p>Description: {{ book.description }}</p>
                 <p>Genre: {{ book.genres }}</p>
-                <p>Author: {{ book.author }}</p>
+                <p>Author: <a href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a></p>
                 <img class="book-image" src="{{ book.image }}" alt="{{ book.title }}">
                 <p>Added by: {{ book.added_by }}</p>
             </li>
@@ -18,4 +34,5 @@
             <li>No books available.</li>
         {% endfor %}
     </ul>
+    <button onclick="goBack()">Back</button>
 {% endblock %}

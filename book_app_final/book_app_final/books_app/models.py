@@ -1,5 +1,6 @@
 from django.contrib.auth import models as auth_models
 from django.db import models
+from django.utils.text import slugify
 
 from book_app_final.users_app.models import CustomUser
 
@@ -9,8 +10,19 @@ class Author(models.Model):
         max_length=200
     )
 
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        blank=True,
+    )
+
     def __str__(self):
         return self.author_name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.author_name)
+        super().save(*args, **kwargs)
 
 
 class Genre(models.Model):

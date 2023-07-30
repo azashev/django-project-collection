@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    {#  Filtering  #}
+    <form method="GET">
+        <label for="filter-genre">Filter by genre:</label>
+        <select id="filter-genre" name="genre">
+            <option value="">Select...</option>
+            {% for genre in genres %}
+                <option value="{{ genre.id }}">{{ genre.genre_name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Apply</button>
+    </form>
+
+    <h2>Author: {{ object.author_name }}</h2>
+    <div>
+        <p>Books:</p>
+        {% for book in books %}
+            <a href="{% url 'book_details' pk=book.pk %}">{{ book }}</a>
+            <p>Description: {{ book.description }}</p>
+            <p>Author: <a href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a></p>
+            <p>Genre:
+                {% for genre in book.genres.all %}
+                    {{ genre.genre_name }}{% if not forloop.last %},
+                {% endif %}
+                {% endfor %}
+            </p>
+            <img class="book-image" src="{{ book.book_image }}" alt="{{ book.title }} image">
+            <hr>
+            <br>
+        {% empty %}
+            <p>No books written by this author have been added yet</p>
+        {% endfor %}
+    </div>
+    <button onclick="goBack()">Back</button>
+{% endblock %}

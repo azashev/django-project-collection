@@ -1,8 +1,9 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.http import Http404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import DetailView, FormView, ListView, DeleteView, TemplateView
+from django.views.generic import DetailView, FormView, DeleteView, TemplateView
 from django.contrib.auth import views as auth_views, forms as auth_forms, mixins as auth_mixins, login
 
 from book_app_final.books_app.models import Book
@@ -39,6 +40,7 @@ class UserRegisterView(FormView):
             profile.user = user
             profile.is_default_image = True
             profile.save()
+            Shelf.objects.create(user=user)
             login(request, user)
             return redirect(self.success_url)
         else:
@@ -145,16 +147,51 @@ class ProfileDeleteView(auth_mixins.LoginRequiredMixin, DeleteView):
 class PasswordChangeView(auth_mixins.LoginRequiredMixin, auth_views.PasswordChangeView):
     template_name = 'user_templates/password_change.html'
     form_class = auth_forms.PasswordChangeForm
-    success_url = reverse_lazy('password_changed')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Password changed successfully!")
+
+        return response
+
+    def get_success_url(self):
+        return reverse('update_profile')
 
 
-class PasswordChangedView(auth_mixins.LoginRequiredMixin, TemplateView):
-    template_name = 'user_templates/password_changed.html'
-
-
-class ShelfView(auth_mixins.LoginRequiredMixin, ListView):
+class ShelfView(auth_mixins.LoginRequiredMixin, DetailView):
     model = Shelf
-    template_name = 'shelf_templates/user_shelf.html'
+    template_name = 'user_templates/user_shelf.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user.shelf
+
+
+class AddToShelfView(auth_mixins.LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        book = get_object_or_404(Book, id=kwargs['pk'])
+        shelf, created = Shelf.objects.get_or_create(user=request.user)
+        if shelf.books.count() >= 5:
+            messages.error(request, "You cannot have more than 5 books in your shelf!")
+            return redirect('book_details', pk=book.pk)
+        shelf.books.add(book)
+        messages.success(request, "Successfully added a book to the shelf!")
+        return redirect('book_details', pk=book.pk)
+
+
+class RemoveFromShelfView(auth_mixins.LoginRequiredMixin, DeleteView):
+    template_name = 'user_templates/delete_book_from_shelf.html'
+
+    def get_object(self, queryset=None):
+        shelf = get_object_or_404(Shelf, user=self.request.user)
+        book = get_object_or_404(Book, pk=self.kwargs.get('pk'))
+
+        if book not in shelf.books.all():
+            raise Http404("Book not found on your shelf")
+
+        return book
+
+    def get_success_url(self):
+        return reverse('shelf')
 
 
 class ProfileBooksView(auth_mixins.LoginRequiredMixin, View):

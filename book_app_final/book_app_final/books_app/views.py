@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
-from book_app_final.books_app.forms import BookForm
+from book_app_final.books_app.forms import BookForm, CatalogueFilterForm
 from book_app_final.books_app.models import Book
 from book_app_final.reviews_app.forms import ReviewForm
 from book_app_final.reviews_app.models import Review
@@ -10,6 +10,21 @@ from book_app_final.reviews_app.models import Review
 @login_required
 def book_catalogue(request):
     books = Book.objects.all()
+    form = CatalogueFilterForm(request.GET)
+
+    author_query = request.GET.get('author')
+    genre_query = request.GET.get('genre')
+    sort_by = request.GET.get('sort_by')
+
+    if author_query:
+        books = books.filter(author__id=author_query)
+
+    if genre_query:
+        books = books.filter(genres__id=genre_query)
+
+    if sort_by:
+        books = books.order_by(sort_by)
+
     books_with_genres = []
 
     for book in books:
@@ -25,6 +40,7 @@ def book_catalogue(request):
         })
 
     context = {
+        'form': form,
         'books': books_with_genres,
     }
 
@@ -52,7 +68,7 @@ def book_add(request):
 
 @login_required
 def book_details(request, pk):
-    book = Book.objects.get(pk=pk)
+    book = get_object_or_404(Book, pk=pk)
     review_form = ReviewForm(request.POST or None)
 
     if review_form.is_valid():
@@ -74,7 +90,7 @@ def book_details(request, pk):
 
 @login_required
 def book_edit(request, pk):
-    book = Book.objects.get(pk=pk)
+    book = get_object_or_404(Book, pk=pk)
 
     if not book.created_by == request.user:
         return redirect('my_books')
@@ -99,9 +115,17 @@ def book_edit(request, pk):
 
 @login_required
 def book_delete(request, pk):
-    pass
+    book = get_object_or_404(Book, pk=pk)
 
+    if not book.created_by == request.user:
+        return redirect('my_books')
 
-@login_required
-def book_shelf(request):
-    pass
+    if request.method == 'POST':
+        book.delete()
+        return redirect('my_books')
+
+    else:
+        context = {
+            'book': book,
+        }
+        return render(request, 'book_templates/book_delete.html', context)

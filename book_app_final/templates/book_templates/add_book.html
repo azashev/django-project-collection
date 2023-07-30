@@ -2,9 +2,11 @@
 
 {% block content %}
     <h1>Add a book</h1>
-    <form method="post" action="{% url 'book_add' %}">
+    <form method="POST" action="{% url 'book_add' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" name="submit" value="Add a book">
     </form>
+    <button onclick="goBack()">Back</button>
+
 {% endblock %}
