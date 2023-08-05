@@ -92,7 +92,7 @@ class Profile(models.Model):
                 'jpg', 'jpeg', 'png'
             ]
         )],
-        default='profile_pics/default.jpg'
+        default='profile_pics/default.png'
     )
 
     is_default_image = models.BooleanField(

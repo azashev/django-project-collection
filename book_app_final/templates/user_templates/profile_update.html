@@ -2,44 +2,89 @@
 {% load static %}
 {% load custom_filters %}
 
-{% block content %}
-    <h1>Edit Profile</h1>
-    <img src="{% if not user.profile.is_default_image %}
-                {{ user.profile.profile_picture.url }}
-              {% else %}
-                {% static 'images/default.jpg' %}
-              {% endif %}" alt="Profile picture">
+{% block body_id %}profile-edit-page{% endblock %}
 
-    <a href="{% url 'password_change' %}">Change password</a>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% for field in user_form %}
-            {% if field.errors %}
-                {% for error in field.errors %}
-                    <div class="error">{{ error }}</div>
-                {% endfor %}
-            {% endif %}
-            {% if field.name == 'first_name' or field.name == 'last_name' %}
-                <p>{{ field.label }} : {{ field }}</p>
-            {% else %}
-                <p>{{ field.label }} : {{ field }}</p>
-            {% endif %}
-        {% endfor %}
-        {% for field in form %}
-            {% if not field.name == 'profile_picture' %}
-                <p>{{ field.label }} : {{ field }}</p>
-            {% endif %}
-        {% endfor %}
-        {% if form.profile_picture.value and not user.profile.is_default_image %}
-            <input type="checkbox" name="profile_picture_clear" id="profile_picture_clear">
-            <label for="profile_picture_clear">Remove current picture</label>
-            <br>
-        {% endif %}
-        <label for="{{ form.profile_picture.auto_id }}">Upload a profile picture (.jpg, .jpeg, or .png):</label>
-        <br>
-        <input type="file" name="{{ form.profile_picture.name }}" id="{{ form.profile_picture.auto_id }}"
-               accept=".jpg, .jpeg, .png">
-        <br>
-        <button type="submit">Save changes</button>
-    </form>
+{% block content %}
+    <div class="page-content page-container" id="page-content">
+        <div class="padding">
+            <div class="row container d-flex justify-content-center">
+                <div class="col-xl-6 col-md-12">
+                    <div class="card user-card-full">
+                        <div class="row m-l-0 m-r-0">
+                            <div class="col-sm-4 bg-c-lite-green user-profile">
+                                <div class="card-block text-center text-white">
+                                    <div class="m-b-25">
+                                        <img src="{% if not user.profile.is_default_image %}
+                                            {{ user.profile.profile_picture.url }}
+                                        {% else %}
+                                            {% static 'images/default.png' %}
+                                        {% endif %}" alt="Profile picture" class="img-radius">
+                                    </div>
+                                    <h6 class="f-w-600">Edit {{ profile.user.username }}</h6>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="card-block">
+                                    <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            {% for field in user_form %}
+                                                <div class="col-sm-6">
+                                                    {% if field.errors %}
+                                                        {% for error in field.errors %}
+                                                            <div class="error">{{ error }}</div>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    <p class="m-b-10 f-w-600">{{ field.label }}</p>
+                                                    <h6 class="text-muted f-w-400">{{ field }}</h6>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="row">
+                                            {% for field in form %}
+                                                <div class="col-sm-6">
+                                                    {% if not field.name == 'profile_picture' %}
+                                                        <p class="m-b-10 f-w-600">{{ field.label }}</p>
+                                                        <h6 class="text-muted f-w-400">{{ field }}</h6>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                {% if form.profile_picture.value and not user.profile.is_default_image %}
+                                                    <input type="checkbox" name="profile_picture_clear"
+                                                           id="profile_picture_clear">
+                                                    <label for="profile_picture_clear">Remove current picture</label>
+                                                {% endif %}
+                                                <br>
+                                                <label for="{{ form.profile_picture.auto_id }}">Upload a profile picture
+                                                    (.jpg, .jpeg, or .png):</label>
+                                                <br>
+                                                <input type="file" name="{{ form.profile_picture.name }}"
+                                                       id="{{ form.profile_picture.auto_id }}"
+                                                       accept=".jpg, .jpeg, .png">
+                                            </div>
+                                        </div>
+
+                                        <button type="submit"
+                                                class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">
+                                            Save changes
+                                        </button>
+                                    </form>
+                                    <div class="button-container">
+                                        <a href="{% url 'password_change' %}"
+                                           class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">Change
+                                            password</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
