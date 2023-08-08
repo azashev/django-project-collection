@@ -42,8 +42,54 @@
 
 /*Buttons 2*/
 
+.back-btn {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 50px;
+    height: 33px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    border-radius: 15%;
+    border: 1px solid #fff;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.back-btn:hover {
+    background-color: #A9A9A9FF;
+    color: #000;
+}
 
 
+/*Top button*/
+
+#topBtn {
+    position: fixed;
+    bottom: 70px;
+    right: 120px;
+    display: none;
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+#topBtn:hover {
+    background-color: #A9A9A9FF;
+    color: #000;
+}
 
 
 /*Homepage*/
@@ -77,6 +123,75 @@ body {
 }
 
 
+/*Catalogue*/
+
+#catalogue-page {
+    background: linear-gradient(to right, #2d2c31, #787781);
+}
+
+.catalogue-header {
+    text-align: center;
+}
+
+.catalogue-book-image {
+    width: 150px;
+    height: 150px;
+    display: block;
+    border-radius: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+#catalogue-page .card-body {
+    text-align: center;
+}
+
+#catalogue-page .card-img-top {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.col-md-4 .catalogue-card {
+    border: 2px solid #000;
+    background-color: lightgray;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.col-md-4 .catalogue-card:hover {
+    background-color: #A9A9A9FF;
+}
+
+.catalogue-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.catalogue-card-link:hover .card {
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.catalogue-card-link:focus .card,
+.catalogue-card-link:active .card {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+    margin-top: 3rem;
+    margin-bottom: 30px;
+    font-family: 'Open Sans', sans-serif;
+    color: #6cd900;
+    text-shadow: 2px 2px 4px #888888;
+}
+
+select {
+    margin-right: 20px;
+}
+
+
 /*Profile page*/
 
 #profile-page {
@@ -99,6 +214,7 @@ body {
 
 .user-card-full {
     overflow: hidden;
+    background-color: lightgray;
 }
 
 .card {
@@ -131,7 +247,7 @@ body {
 }
 
 .card-block {
-    padding: 1.25rem;
+    padding: 1.25rem 1.25rem 1.25rem 0;
 }
 
 .m-b-25 {
@@ -198,7 +314,7 @@ h6 {
 /*Profile edit*/
 
 #profile-edit-page {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/profile-edit3.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/profile-edit.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -223,9 +339,79 @@ h6 {
     margin-right: 10px;
 }
 
+.editing-profile {
+    margin-bottom: 55px;
+}
 
-/*Catalogue*/
+/*Change password*/
 
-#catalogue-page {
-    background: linear-gradient(to right, #2d2c31, #787781);
+#password-change-page {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/profile-edit.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+}
+
+.password-change-card {
+    width: 80%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    color: #000000;
+    background-color: #cecece;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.password-change-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.password-change-card form p {
+    margin-bottom: 20px;
+}
+
+.back-button {
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+}
+
+
+/*My Books*/
+
+
+
+/*Book details*/
+
+#book-details-page {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('../images/book-details.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.cb-book {
+    text-align: center;
+    padding: 1.25rem;
+}
+
+.b-b-default {
+    border: none;
+}
+
+.m-b-20 {
+    margin: 0;
+}
+
+.book-details {
+    margin-top: 15px;
+}
+
+.book-details-row {
+    margin-bottom: 25px !important;
 }

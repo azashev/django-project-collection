@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block body_id %}my-books{% endblock %}
+
 {% block content %}
     <h2>My Books</h2>
     {% for book in books %}

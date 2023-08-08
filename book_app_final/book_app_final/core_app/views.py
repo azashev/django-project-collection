@@ -27,7 +27,7 @@ class AuthorBooksView(auth_mixins.LoginRequiredMixin, DetailView):
 
         if genre_query:
             genre = get_object_or_404(Genre, id=genre_query)
-            books = books.filter(genres_iin=[genre])
+            books = books.filter(genres__in=[genre])
 
         context['books'] = books
         context['genres'] = Genre.objects.all()

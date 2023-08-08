@@ -1,51 +1,80 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block body_id %}book-details-page{% endblock %}
 
 {% block content %}
-    <h2>{{ book.title }}</h2>
-    <div>
-        <p>Title: {{ book.title }}</p>
-        <p>Description: {{ book.description }}</p>
-        <p>Author: <a href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a></p>
-        <p>Genre:
-            {% for genre in book.genres.all %}
-                {{ genre.genre_name }}{% if not forloop.last %},
-                {% endif %}
-            {% endfor %}
-        </p>
-        <img class="book-image" src="{{ book.book_image }}" alt="{{ book.title }} image">
-        <br>
-        <a href="{% url 'add_to_shelf' pk=book.pk %}">Add to shelf</a>
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    <div class="catalogue-header">
+        <h1 class="page-title">Book details</h1>
     </div>
 
-    {% if book.created_by == request.user %}
-        <p><a href="{% url 'book_edit' pk=book.pk %}">Edit book</a></p>
-        <p><a href="{% url 'book_delete' pk=book.pk %}">Delete book</a></p>
-    {% endif %}
+    <div class="page-content page-container" id="page-content">
+        <div class="padding">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-xl-6 col-md-12">
+                        <button onclick="goBack()" class="back-btn mb-2">Back</button>
+                        <div class="card user-card-full">
+                            <div class="row m-l-0 m-r-0">
+                                <div class="col-sm-6">
+                                    <!-- Book Image -->
+                                    <div class="text-center">
+                                        <img src="{{ book.book_image }}" class="img-fluid catalogue-book-image" alt="{{ book.title }} image">
+                                    </div>
 
-    <h2>Reviews:</h2>
-    {% for review in reviews %}
-        <div>
-            <p>{{ review.created_at|date:"d/m/Y, h:i A" }}</p>
-            <p>{{ review.user.username }}: {{ review.review_text }} {% if user == review.user %}
-                <a href="{% url 'review_delete' review.id %}?next={{ request.path }}">X</a>
-            {% endif %}</p>
-            <br>
+                                    <!-- Book Details -->
+                                    <div class="card-block cb-book">
+                                        <h6 class="f-w-600 book-details-row">Title:<br>
+                                            {{ book.title }}
+                                        </h6>
+                                        <p class="m-b-10 f-w-600">Description:</p>
+                                        <p class="text-muted f-w-400 book-details-row">{{ book.description }}</p>
+                                        <p class="m-b-10 f-w-600">Author:</p>
+                                        <p class="book-details-row"><a href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a></p>
+                                        <p class="m-b-10 f-w-600">Genre:</p>
+                                        <p>
+                                            {% for genre in book.genres.all %}
+                                                {{ genre.genre_name }}{% if not forloop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </p>
+                                        {% if book.created_by == request.user %}
+                                            <a href="{% url 'book_edit' pk=book.pk %}" class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">Edit book</a>
+                                            <a href="{% url 'book_delete' pk=book.pk %}" class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">Delete book</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 book-details">
+                                    <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Reviews:</h6>
+                                    {% for review in reviews %}
+                                        <div class="card-block review-section">
+                                            <p>{{ review.created_at|date:"d/m/Y, h:i A" }}</p>
+                                            <p>{{ review.user.username }}: {{ review.review_text }}
+                                                {% if user == review.user %}
+                                                    <a href="{% url 'review_delete' review.id %}?next={{ request.path }}">X</a>
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    {% empty %}
+                                        <p>No reviews yet</p>
+                                    {% endfor %}
+                                    <hr>
+                                    <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Leave a review:</h6>
+                                    <div class="card-block">
+                                        <form action="{% url 'book_details' pk=book.pk %}" method="POST">
+                                            {% csrf_token %}
+                                            <label for="{{ review_form.review_text.id_for_label }}">Review:</label>
+                                            <br>
+                                            {{ review_form.review_text }}
+                                            <br>
+                                            <input type="submit" value="Submit Review" class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% empty %}
-        <p>No reviews yet</p>
-    {% endfor %}
-
-    <h2>Leave a review:</h2>
-    <form action="{% url 'book_details' pk=book.pk %}" method="POST">
-        {% csrf_token %}
-        {{ review_form.as_p }}
-        <input type="submit" value="Submit Review">
-    </form>
+    </div>
 {% endblock %}

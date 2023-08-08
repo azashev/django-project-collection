@@ -20,7 +20,14 @@
                                             {% static 'images/default.png' %}
                                         {% endif %}" alt="Profile picture" class="img-radius">
                                     </div>
-                                    <h6 class="f-w-600">Edit {{ profile.user.username }}</h6>
+                                    <h6 class="f-w-600 editing-profile">Editing {{ profile.user.username }}</h6>
+                                    <p>Added books:<br>
+                                        {% if user.added_books.all %}
+                                            {{ user.added_books.all|length }}
+                                        {% else %}
+                                            you haven't added any books yet
+                                        {% endif %}
+                                    </p>
                                 </div>
                             </div>
                             <div class="col-sm-8">
