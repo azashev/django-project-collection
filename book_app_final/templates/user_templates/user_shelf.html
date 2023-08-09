@@ -1,25 +1,54 @@
 {% extends 'base.html' %}
 
+{% block body_id %}shelf-page{% endblock %}
+
 {% block content %}
-    {% for book in object.books.all %}
-        <div>
-            <h2>Title: <a href="{% url 'book_details' pk=book.pk %}">{{ book.title }}</a></h2>
-            <a href="{% url 'remove_from_shelf' pk=book.pk %}">Remove book from shelf</a>
-            <p>Description: {{ book.description }}</p>
-            <p>Genre:
-                {% for genre in book.genres.all %}
-                    {{ genre.genre_name }}{% if not forloop.last %},
-                    {% endif %}
-                {% endfor %}
-            </p>
-            <p>Author: <a href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a></p>
-            <img class="book-image" src="{{ book.book_image }}" alt="{{ book.title }}">
-            <p>Added by: {{ book.created_by.username }}</p>
-        </div>
-        <hr>
-        <br>
-    {% empty %}
-        <p>You haven't added any books to your shelf yet</p>
-    {% endfor %}
-    <button onclick="goBack()">Back</button>
+    <div class="header-center">
+        <h1 class="page-title">My Book Shelf</h1>
+    </div>
+
+    <div class="container">
+        <button onclick="goBack()" class="back-btn">Back</button>
+        <div class="row">
+            {% for book in object.books.all %}
+                <div class="col-md-4">
+                    <div class="card mb-4 author-book-card">
+                        <a href="{% url 'book_details' pk=book.pk %}">
+                            <img class="card-img-top catalogue-book-image" src="{{ book.book_image }}"
+                                 alt="{{ book.title }}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            {% if book.description %}
+                                <p class="card-text">
+                                    <strong>Description:</strong> {{ book.description|truncatewords:20 }}</p>
+                            {% endif %}
+                            <p><strong>Genre:</strong>
+                                {% for genre in book.genres.all %}
+                                    {{ genre.genre_name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                            <p><strong>Author:</strong>
+                                <a href="{% url 'author_books' slug=book.author.slug %}"
+                                   class="author-link">{{ book.author }}</a>
+                            </p>
+                            <p><strong>Added by:</strong> {{ book.created_by.username }}</p>
+                            <p>
+                                <a href="{% url 'remove_from_shelf' pk=book.pk %}" class="btn btn-danger">Remove from
+                                    Shelf</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}
+                    </div>
+                    <div class="row">
+                {% endif %}
+            {% empty %}
+                <div class="col-12">
+                    <p>You haven't added any books to your shelf yet</p>
+                </div>
+            {% endfor %}
+            </div>
+    </div>
 {% endblock %}

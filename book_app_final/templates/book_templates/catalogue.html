@@ -5,7 +5,7 @@
 {% block content %}
     <button onclick="topFunction()" id="topBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
 
-    <div class="catalogue-header">
+    <div class="header-center">
         <h1 class="page-title">Book Catalogue</h1>
 
         {#  Filtering  #}
@@ -44,7 +44,8 @@
                             {% endif %}
                             <p><strong>Genre:</strong> {{ book.genres }}</p>
                             <p><strong>Author:</strong>
-                                <a href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a>
+                                <a href="{% url 'author_books' slug=book.author.slug %}"
+                                   class="author-link">{{ book.author }}</a>
                             </p>
                             <p><strong>Added by:</strong> {{ book.added_by }}</p>
                         </div>

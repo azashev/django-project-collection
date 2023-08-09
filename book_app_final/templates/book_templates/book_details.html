@@ -4,9 +4,19 @@
 {% block body_id %}book-details-page{% endblock %}
 
 {% block content %}
-    <div class="catalogue-header">
+    <div class="header-center">
         <h1 class="page-title">Book details</h1>
     </div>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <div class="page-content page-container" id="page-content">
         <div class="padding">
@@ -19,7 +29,8 @@
                                 <div class="col-sm-6">
                                     <!-- Book Image -->
                                     <div class="text-center">
-                                        <img src="{{ book.book_image }}" class="img-fluid catalogue-book-image" alt="{{ book.title }} image">
+                                        <img src="{{ book.book_image }}" class="img-fluid catalogue-book-image"
+                                             alt="{{ book.title }} image">
                                     </div>
 
                                     <!-- Book Details -->
@@ -30,16 +41,32 @@
                                         <p class="m-b-10 f-w-600">Description:</p>
                                         <p class="text-muted f-w-400 book-details-row">{{ book.description }}</p>
                                         <p class="m-b-10 f-w-600">Author:</p>
-                                        <p class="book-details-row"><a href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a></p>
+                                        <p class="book-details-row"><a
+                                                href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a>
+                                        </p>
                                         <p class="m-b-10 f-w-600">Genre:</p>
                                         <p>
                                             {% for genre in book.genres.all %}
                                                 {{ genre.genre_name }}{% if not forloop.last %}, {% endif %}
                                             {% endfor %}
                                         </p>
+
+                                        {% if request.user.is_authenticated %}
+                                            {% if book not in request.user.shelf.books.all %}
+                                                <br>
+                                                <a href="{% url 'add_to_shelf' pk=book.pk %}"
+                                                   class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">Add
+                                                    to Shelf</a>
+                                            {% endif %}
+                                        {% endif %}
+
                                         {% if book.created_by == request.user %}
-                                            <a href="{% url 'book_edit' pk=book.pk %}" class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">Edit book</a>
-                                            <a href="{% url 'book_delete' pk=book.pk %}" class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">Delete book</a>
+                                            <a href="{% url 'book_edit' pk=book.pk %}"
+                                               class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">Edit
+                                                book</a>
+                                            <a href="{% url 'book_delete' pk=book.pk %}"
+                                               class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">Delete
+                                                book</a>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -66,7 +93,8 @@
                                             <br>
                                             {{ review_form.review_text }}
                                             <br>
-                                            <input type="submit" value="Submit Review" class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">
+                                            <input type="submit" value="Submit Review"
+                                                   class="btn custom-btn mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">
                                         </form>
                                     </div>
                                 </div>

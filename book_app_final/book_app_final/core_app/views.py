@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import mixins as auth_mixins
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 
 from book_app_final.books_app.models import Author, Book, Genre
@@ -33,3 +33,8 @@ class AuthorBooksView(auth_mixins.LoginRequiredMixin, DetailView):
         context['genres'] = Genre.objects.all()
 
         return context
+
+
+def custom_404_view(request, exception):
+    messages.warning(request, "The item you're looking for doesn't exist or has been removed.")
+    return redirect('homepage')

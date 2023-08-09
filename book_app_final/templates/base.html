@@ -58,6 +58,7 @@
                                 <li><a class="dropdown-item" href="{% url 'user_logout' %}">Logout</a></li>
                             </ul>
                         </li>
+                        <span class="logged-in-user">{{ user }}</span>
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'user_login' %}">Login</a>

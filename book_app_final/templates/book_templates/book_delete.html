@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 
+{% block body_id %}delete-book-page{% endblock %}
+
 {% block content %}
-    <form action="{% url 'book_delete' pk=book.pk %}" method="POST">
-        {% csrf_token %}
-        <p>Are you sure you want to delete the book "{{ book.title }}"?</p>
-        <input type="submit" value="Confirm">
-        <a href="{% url 'book_details' pk=book.pk %}">Cancel</a>
-    </form>
+    <div class="confirm-delete-container">
+        <form action="{% url 'book_delete' pk=book.pk %}" method="POST" class="mb-3">
+            {% csrf_token %}
+            <h3>Are you sure you want to delete the book "{{ book.title }}"?</h3>
+            <input type="submit" value="Delete" class="btn custom-btn">
+        </form>
+        <a href="{% url 'book_details' pk=book.pk %}" class="btn custom-btn">Cancel</a>
+    </div>
 {% endblock %}

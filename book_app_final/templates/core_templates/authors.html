@@ -1,11 +1,43 @@
 {% extends 'base.html' %}
-{% load static %}
+
+{% block body_id %}authors-page{% endblock %}
 
 {% block content %}
-    {% for author in object_list %}
-        <div>
-            <a href="{% url 'author_books' slug=author.slug %}">{{ author.slug }}</a>
+    <div class="header-center">
+        <h1 class="page-title">Authors</h1>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <button onclick="goBack()" class="back-btn">Back</button>
+            </div>
         </div>
-    {% endfor %}
-    <button onclick="goBack()">Back</button>
+
+        <div class="row">
+            {% for author in object_list %}
+                <div class="col-md-4 mb-3">
+                    <div class="card author-card">
+                        <a href="{% url 'author_books' slug=author.slug %}" class="text-decoration-none text-dark">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ author.author_name }}</h5>
+                                {% if author.book_set.count < 2 %}
+                                    {% if author.book_set.count > 0 %}
+                                        <p class="card-text">1 book</p>
+                                    {% else %}
+                                        <p class="card-text">0 books</p>
+                                    {% endif %}
+                                {% else %}
+                                    <p class="card-text">{{ author.book_set.count }} books</p>
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}
+                    </div>
+                    <div class="row">
+                {% endif %}
+            {% endfor %}
+            </div>
+    </div>
 {% endblock %}

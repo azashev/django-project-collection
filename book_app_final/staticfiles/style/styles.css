@@ -8,6 +8,16 @@
     height: 150px;
 }
 
+.logged-in-user {
+    margin-top: 11px;
+    margin-left: 10px;
+    color: #2d2c31;
+}
+
+.messages {
+    text-align: center;
+}
+
 /*Buttons*/
 
 .custom-btn,
@@ -25,6 +35,7 @@
     color: #fff;
     text-decoration: none;
     display: inline-block;
+    margin-bottom: 10px;
 }
 
 .custom-btn:hover {
@@ -126,10 +137,15 @@ body {
 /*Catalogue*/
 
 #catalogue-page {
-    background: linear-gradient(to right, #2d2c31, #787781);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/catalogue.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
 }
 
-.catalogue-header {
+.header-center {
     text-align: center;
 }
 
@@ -209,7 +225,7 @@ select {
 
 
 .padding {
-    padding: 3rem !important;
+    padding: 1rem !important;
 }
 
 .user-card-full {
@@ -382,8 +398,57 @@ h6 {
 }
 
 
-/*My Books*/
+/*Profile delete*/
+#delete-profile-page {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 2.8)), url('../images/delete-book.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    height: 100vh;
+}
 
+
+/*My Books*/
+#my-books-page {
+    background: linear-gradient(to right, #2d2c31, #787781);
+}
+
+.col-md-4 .my-books-card {
+    border: 1px solid #000;
+    background-color: lightgray;
+    text-align: center;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.col-md-4 .my-books-card:hover {
+    background-color: #A9A9A9FF;
+}
+
+.my-books-book-image {
+    width: 150px;
+    height: 150px;
+    display: block;
+    border-radius: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+
+/*Add book*/
+
+#add-book-page {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('../images/add-book.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+}
+
+.add-book-form {
+    text-align: center;
+}
 
 
 /*Book details*/
@@ -393,6 +458,7 @@ h6 {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    min-height: 100vh;
 }
 
 .cb-book {
@@ -415,3 +481,141 @@ h6 {
 .book-details-row {
     margin-bottom: 25px !important;
 }
+
+.text-muted {
+    color: black !important;
+}
+
+/*Book edit*/
+#edit-book-page {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('../images/edit-book.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.card-title {
+    text-align: center;
+}
+
+.book-edit-book-image {
+    width: 150px;
+    height: 150px;
+    display: block;
+    border-radius: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+
+.card .edit-book-card-body .book-edit-holder {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.edit-book-card {
+    padding: 10px;
+}
+
+.edit-book-save-changes {
+    text-align: center;
+}
+
+
+/*Book delete*/
+#delete-book-page {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 2.8)), url('../images/delete-book.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    height: 100vh;
+}
+
+
+/*Authors page*/
+#authors-page {
+    background: linear-gradient(to right, #2d2c31, #787781);
+}
+
+.author-card:hover {
+    background-color: #A9A9A9FF;
+}
+
+.mb-3 {
+    margin-bottom: 0 !important;
+}
+
+
+/*Author details page*/
+#author-books-page {
+    background: linear-gradient(to right, #2d2c31, #787781);
+}
+
+.col-md-4 .author-book-card {
+    border: 2px solid #000;
+    background-color: lightgray;
+    text-align: center;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.col-md-4 .author-book-card:hover {
+    background-color: #b4b4b4;
+}
+
+a.author-link {
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+    border-bottom: 2px solid #000;
+    -webkit-transition: color 0.3s ease, border-bottom 0.3s ease;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+a.author-link:hover {
+    color: #FFF;
+    border-bottom: 2px solid #FFF;
+    padding-bottom: 2px;
+
+}
+
+/*Shelf page*/
+#shelf-page {
+    background: linear-gradient(to right, #2d2c31, #787781);
+}
+
+/*Delete book from shelf*/
+#delete-book-from-shelf-page {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 2.8)), url('../images/delete-book.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    height: 100vh;
+}
+
+.confirm-delete-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+
+
+/*Change password*/
+
+.password-change-wrapper {
+    width: 100%;
+    max-width: 392px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.pwd-change-back-btn-container {
+    width: 100%;
+    text-align: left;
+}
+
+.password-change-card {
+    width: 100%;
+    margin: 0;
+}
+

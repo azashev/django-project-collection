@@ -5,6 +5,8 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import DetailView, FormView, DeleteView, TemplateView
 from django.contrib.auth import views as auth_views, forms as auth_forms, mixins as auth_mixins, login
+from django.views.decorators.cache import never_cache
+from django.utils.decorators import method_decorator
 
 from book_app_final.books_app.models import Book
 from book_app_final.reviews_app.models import Review
@@ -178,20 +180,24 @@ class AddToShelfView(auth_mixins.LoginRequiredMixin, View):
         return redirect('book_details', pk=book.pk)
 
 
-class RemoveFromShelfView(auth_mixins.LoginRequiredMixin, DeleteView):
+# @method_decorator(never_cache, name='dispatch')
+class RemoveFromShelfView(auth_mixins.LoginRequiredMixin, View):
     template_name = 'user_templates/delete_book_from_shelf.html'
 
-    def get_object(self, queryset=None):
+    def get(self, request, *args, **kwargs):
+        book = get_object_or_404(Book, pk=self.kwargs.get('pk'))
+        context = {'book': book}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
         shelf = get_object_or_404(Shelf, user=self.request.user)
         book = get_object_or_404(Book, pk=self.kwargs.get('pk'))
 
         if book not in shelf.books.all():
             raise Http404("Book not found on your shelf")
 
-        return book
-
-    def get_success_url(self):
-        return reverse('shelf')
+        shelf.books.remove(book)
+        return redirect('shelf')
 
 
 class ProfileBooksView(auth_mixins.LoginRequiredMixin, View):

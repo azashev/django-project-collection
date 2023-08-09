@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 
+{% block body_id %}delete-profile-page{% endblock %}
+
 {% block content %}
-    <h2>Delete Account</h2>
-    <p>Are you sure you want to delete your account? This will also delete all the content associated with your
-        profile</p>
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit">Delete Account</button>
-    </form>
-    <a href="{% url 'profile' %}">Cancel</a>
+    <div class="confirm-delete-container">
+        <h5>Are you sure you want to delete your account? This will also delete all the content associated with your
+            profile</h5>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Delete" class="btn custom-btn">
+        </form>
+        <a href="{% url 'profile' %}" class="btn custom-btn">Cancel</a>
+    </div>
 {% endblock %}

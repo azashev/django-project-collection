@@ -1,25 +1,49 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block body_id %}my-books{% endblock %}
+{% block body_id %}my-books-page{% endblock %}
 
 {% block content %}
-    <h2>My Books</h2>
-    {% for book in books %}
-        <div>
-            <p>Title: <a href="{% url 'book_details' pk=book.pk %}">{{ book.title }}</a></p>
-            <img class="book-image" src="{{ book.image }}" alt="{{ book.title }} image">
-            <p>Description: {{ book.description }}</p>
-            <p>Genre: {{ book.genres }}</p>
-            <p>Author: <a href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a></p>
-            <p><a href="{% url 'book_edit' pk=book.pk %}">Edit book</a></p>
-            <p><a href="{% url 'book_delete' pk=book.pk %}">Delete book</a></p>
-        </div>
-        <hr>
-        <br>
-    {% empty %}
-        <p>You haven't added any books yet</p>
-    {% endfor %}
-    <button onclick="goBack()">Back</button>
+    <button onclick="topFunction()" id="topBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
 
+    <div class="header-center">
+        <h1 class="page-title">My Books</h1>
+    </div>
+
+    <div class="container">
+        <button onclick="goBack()" class="back-btn">Back</button>
+        <div class="row">
+            {% for book in books %}
+                <div class="col-md-4">
+                    <div class="card mb-4 my-books-card">
+                        <a href="{% url 'book_details' pk=book.pk %}">
+                            <img class="card-img-top my-books-book-image" src="{{ book.image }}"
+                                 alt="{{ book.title }}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ book.title }}
+                            </h5>
+                            {% if book.description %}
+                                <p class="card-text">
+                                    <strong>Description:</strong> {{ book.description|truncatewords:20 }}</p>
+                            {% endif %}
+                            <p><strong>Genre:</strong> {{ book.genres }}</p>
+                            <p><strong>Author:</strong>
+                                <a href="{% url 'author_books' slug=book.author.slug %}"
+                                   class="author-link">{{ book.author }}</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}
+                    </div>
+                    <div class="row">
+                {% endif %}
+            {% empty %}
+                <div class="col-12">
+                    <p>You haven't added any books yet.</p>
+                </div>
+            {% endfor %}
+            </div>
+    </div>
 {% endblock %}

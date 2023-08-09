@@ -1,38 +1,65 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
-    {#  Filtering  #}
-    <form method="GET">
-        <label for="filter-genre">Filter by genre:</label>
-        <select id="filter-genre" name="genre">
-            <option value="">Select...</option>
-            {% for genre in genres %}
-                <option value="{{ genre.id }}">{{ genre.genre_name }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Apply</button>
-    </form>
+{% block body_id %}author-books-page{% endblock %}
 
-    <h2>Author: {{ object.author_name }}</h2>
-    <div>
-        <p>Books:</p>
-        {% for book in books %}
-            <a href="{% url 'book_details' pk=book.pk %}">{{ book }}</a>
-            <p>Description: {{ book.description }}</p>
-            <p>Author: <a href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a></p>
-            <p>Genre:
-                {% for genre in book.genres.all %}
-                    {{ genre.genre_name }}{% if not forloop.last %},
-                {% endif %}
+{% block content %}
+    <div class="header-center">
+        <h1 class="page-title">Books by {{ object.author_name }}</h1>
+
+        <!-- Filtering Form -->
+        <form method="GET" class="mb-3">
+            <label for="filter-genre">Filter by genre:</label>
+            <select id="filter-genre" name="genre">
+                <option value="">Select...</option>
+                {% for genre in genres %}
+                    <option value="{{ genre.id }}">{{ genre.genre_name }}</option>
                 {% endfor %}
-            </p>
-            <img class="book-image" src="{{ book.book_image }}" alt="{{ book.title }} image">
-            <hr>
-            <br>
-        {% empty %}
-            <p>No books written by this author have been added yet</p>
-        {% endfor %}
+            </select>
+            <button type="submit" class="back-btn">Apply</button>
+        </form>
     </div>
-    <button onclick="goBack()">Back</button>
+
+    <!-- Books by Author -->
+    <div class="container">
+        <button onclick="goBack()" class="back-btn">Back</button>
+        <div class="row">
+            {% for book in books %}
+                <div class="col-md-4">
+                    <div class="card mb-4 author-book-card">
+                        <a href="{% url 'book_details' pk=book.pk %}">
+                            <img class="card-img-top catalogue-book-image" src="{{ book.book_image }}"
+                                 alt="{{ book.title }}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            {% if book.description %}
+                                <p class="card-text">
+                                    <strong>Description:</strong> {{ book.description|truncatewords:20 }}</p>
+                            {% endif %}
+                            <p><strong>Genre:</strong>
+                                {% for genre in book.genres.all %}
+                                    {{ genre.genre_name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                            <p><strong>Added by:</strong> {{ book.created_by }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}
+                    </div>
+                    <div class="row">
+                {% endif %}
+            {% endfor %}
+            {% if not books and request.GET.genre %}
+                <div class="col-12">
+                    <p>No books of the selected genre by this author have been added yet.</p>
+                </div>
+            {% elif not books %}
+                <div class="col-12">
+                    <p>No books written by this author have been added yet</p>
+                </div>
+            {% endif %}
+            </div>
+    </div>
 {% endblock %}

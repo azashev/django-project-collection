@@ -1,10 +1,44 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block body_id %}edit-book-page{% endblock %}
 
 {% block content %}
-    <h2>Edit book</h2>
-    <form action="{% url 'book_edit' pk=book.pk %}" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
+    <div class="header-center">
+        <h1 class="page-title">Edit Book</h1>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="mb-2">
+                    <button onclick="goBack()" class="back-btn">Back</button>
+                </div>
+                <div class="card edit-book-card">
+                    <div class="edit-book-card-body">
+                        <div class="text-center mb-4 book-edit-book-image">
+                            <img src="{{ book.book_image }}" alt="{{ book.title }}" class="img-fluid"
+                                 style="max-width: 200px;">
+                        </div>
+                        <form action="{% url 'book_edit' pk=book.pk %}" method="POST">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="mb-3 book-edit-holder">
+                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                    {{ field|add_class:"form-control" }}
+                                    {% if field.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ field.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <div class="edit-book-save-changes">
+                                <button type="submit" class="btn custom-btn">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

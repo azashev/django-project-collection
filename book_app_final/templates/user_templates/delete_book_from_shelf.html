@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 
+{% block body_id %}delete-book-from-shelf-page{% endblock %}
+
 {% block content %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        <h3>Are you sure you want to remove this book from your shelf?</h3>
-        <input type="submit" value="Delete">
-    </form>
-    <a href="{% url 'shelf' %}">Cancel</a>
+    <div class="confirm-delete-container">
+        <form action="" method="POST" class="mb-3">
+            {% csrf_token %}
+            <h3>Are you sure you want to remove "{{ book.title }}" from your shelf?</h3>
+            <input type="submit" value="Delete" class="btn custom-btn">
+        </form>
+        <a href="{% url 'shelf' %}" class="btn custom-btn">Cancel</a>
+    </div>
 {% endblock %}
