@@ -35,23 +35,28 @@ class UserRegisterView(FormView):
         user_form = SignUpForm(request.POST)
         profile_form = ProfileForm(request.POST)
         del profile_form.fields['profile_picture']
+        error_message = None
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.is_default_image = True
-            profile.save()
-            Shelf.objects.create(user=user)
-            login(request, user)
-            return redirect(self.success_url)
-        else:
-            context = {
-                'user_form': user_form,
-                'profile_form': profile_form
-            }
+        try:
+            if user_form.is_valid() and profile_form.is_valid():
+                user = user_form.save()
+                profile = profile_form.save(commit=False)
+                profile.user = user
+                profile.is_default_image = True
+                profile.save()
+                Shelf.objects.create(user=user)
+                login(request, user)
+                return redirect(self.success_url)
+        except Exception as e:
+            error_message = "There was an error registering your account. Please try again."
 
-            return render(request, self.template_name, context)
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form,
+            'error_message': error_message
+        }
+
+        return render(request, self.template_name, context)
 
 
 class UserLoginView(auth_views.LoginView):
@@ -110,24 +115,29 @@ class ProfileUpdateView(auth_mixins.LoginRequiredMixin, TemplateView):
         context = self.get_context_data()
         user_form = context['user_form']
         profile_form = context['form']
+        error_message = None
 
-        if user_form.is_valid() and profile_form.is_valid():
-            if 'profile_picture_clear' in request.POST and request.POST['profile_picture_clear'] == 'on':
-                profile = request.user.profile
-                profile.is_default_image = True
-                profile.profile_picture.delete(save=False)
-                profile.profile_picture = None
-                profile.save()
-            else:
-                user_form.save()
-                profile = profile_form.save(commit=False)
-                if 'profile_picture' in request.FILES:
-                    profile.is_default_image = False
-                profile_form.save()
+        try:
+            if user_form.is_valid() and profile_form.is_valid():
+                if 'profile_picture_clear' in request.POST and request.POST['profile_picture_clear'] == 'on':
+                    profile = request.user.profile
+                    profile.is_default_image = True
+                    profile.profile_picture.delete(save=False)
+                    profile.profile_picture = None
+                    profile.save()
+                else:
+                    user_form.save()
+                    profile = profile_form.save(commit=False)
+                    if 'profile_picture' in request.FILES:
+                        profile.is_default_image = False
+                    profile_form.save()
 
-            return redirect(self.success_url)
-        else:
-            return self.render_to_response(context)
+                return redirect(self.success_url)
+        except Exception as e:
+            error_message = "There was an error updating your profile. Please try again."
+
+        context['error_message'] = error_message
+        return self.render_to_response(context)
 
 
 class ProfileDeleteView(auth_mixins.LoginRequiredMixin, DeleteView):
@@ -170,13 +180,21 @@ class ShelfView(auth_mixins.LoginRequiredMixin, DetailView):
 
 class AddToShelfView(auth_mixins.LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        book = get_object_or_404(Book, id=kwargs['pk'])
-        shelf, created = Shelf.objects.get_or_create(user=request.user)
-        if shelf.books.count() >= 5:
-            messages.error(request, "You cannot have more than 5 books in your shelf!")
-            return redirect('book_details', pk=book.pk)
-        shelf.books.add(book)
-        messages.success(request, "Successfully added a book to the shelf!")
+        error_message = None
+        try:
+            book = get_object_or_404(Book, id=kwargs['pk'])
+            shelf, created = Shelf.objects.get_or_create(user=request.user)
+            if shelf.books.count() >= 6:
+                messages.error(request, "You cannot have more than 6 books in your shelf!")
+                return redirect('book_details', pk=book.pk)
+            shelf.books.add(book)
+            messages.success(request, "Successfully added a book to the shelf!")
+        except Exception as e:
+            error_message = "There was an error adding the book to the shelf. Please try again."
+
+        if error_message:
+            messages.error(request, error_message)
+
         return redirect('book_details', pk=book.pk)
 
 

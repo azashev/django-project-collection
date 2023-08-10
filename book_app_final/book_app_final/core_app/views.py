@@ -23,14 +23,21 @@ class AuthorBooksView(auth_mixins.LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         author = self.object
         genre_query = self.request.GET.get('genre')
-        books = Book.objects.filter(author=author)
+        error_message = None
 
-        if genre_query:
-            genre = get_object_or_404(Genre, id=genre_query)
-            books = books.filter(genres__in=[genre])
+        try:
+            books = Book.objects.filter(author=author)
 
-        context['books'] = books
-        context['genres'] = Genre.objects.all()
+            if genre_query:
+                genre = get_object_or_404(Genre, id=genre_query)
+                books = books.filter(genres__in=[genre])
+
+            context['books'] = books
+            context['genres'] = Genre.objects.all()
+        except Exception as e:
+            error_message = "There was an error fetching the books or genres. Please try again."
+
+        context['error_message'] = error_message
 
         return context
 

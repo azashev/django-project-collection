@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 
 from book_app_final.books_app.forms import BookForm, CatalogueFilterForm
@@ -25,23 +27,30 @@ def book_catalogue(request):
     if sort_by:
         books = books.order_by(sort_by)
 
-    books_with_genres = []
+    search_query = request.GET.get('search')
+    if search_query:
+        books = books.filter(Q(title__icontains=search_query))
 
-    for book in books:
-        book_genres = ", ".join([genre.genre_name for genre in book.genres.all()])
-        books_with_genres.append({
+    books_with_genres = [
+        {
             'title': book.title,
             'image': book.book_image,
             'description': book.description,
-            'genres': book_genres,
+            'genres': ", ".join([genre.genre_name for genre in book.genres.all()]),
             'author': book.author,
             'pk': book.pk,
             'added_by': book.created_by.username,
-        })
+        }
+        for book in books
+    ]
+
+    paginator = Paginator(books_with_genres, 12)
+    page = request.GET.get('page')
+    books_for_page = paginator.get_page(page)
 
     context = {
         'form': form,
-        'books': books_with_genres,
+        'books': books_for_page,
     }
 
     return render(request, 'book_templates/catalogue.html', context)
@@ -50,19 +59,23 @@ def book_catalogue(request):
 @login_required
 def book_add(request):
     form = BookForm(request.POST or None)
-
-    if form.is_valid():
-        book = form.save(commit=False)
-        user = request.user
-        book.created_by = user
-        book.save()
-        form.save_m2m()
-        return redirect('book_catalogue')
-
     context = {
         'form': form,
     }
+    error_message = None
 
+    try:
+        if form.is_valid():
+            book = form.save(commit=False)
+            user = request.user
+            book.created_by = user
+            book.save()
+            form.save_m2m()
+            return redirect('book_catalogue')
+    except Exception as e:
+        error_message = "There was an error processing your request. Please try again later."
+
+    context['error_message'] = error_message
     return render(request, 'book_templates/add_book.html', context)
 
 

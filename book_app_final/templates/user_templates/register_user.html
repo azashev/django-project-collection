@@ -1,11 +1,53 @@
 {% extends 'base.html' %}
 
-{% block content %}
-    <form method="POST" action="{% url 'register_user' %}?next={{ request.GET.next }}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
-        <button type="submit">Register</button>
-    </form>
+{% block body_id %}register-user-page{% endblock %}
 
+{% block content %}
+    <div class="center-container">
+        <div class="header-center">
+            <h1 class="page-title">Register</h1>
+        </div>
+
+        <div class="signup-form-wrapper">
+            <form method="POST" action="{% url 'register_user' %}?next={{ request.GET.next }}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for field in user_form %}
+                    <div class="signup-form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="signup-form-help-text">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="signup-field-error">
+                                {{ field.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                {% for field in profile_form %}
+                    <div class="signup-form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="signup-form-help-text">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="signup-field-error">
+                                {{ field.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="signup-btn-wrapper">
+                    <button type="submit" class="btn custom-btn">Register</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 {% endblock %}

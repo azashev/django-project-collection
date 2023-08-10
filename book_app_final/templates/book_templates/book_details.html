@@ -27,7 +27,6 @@
                         <div class="card user-card-full">
                             <div class="row m-l-0 m-r-0">
                                 <div class="col-sm-6">
-                                    <!-- Book Image -->
                                     <div class="text-center">
                                         <img src="{{ book.book_image }}" class="img-fluid catalogue-book-image"
                                              alt="{{ book.title }} image">
@@ -42,7 +41,8 @@
                                         <p class="text-muted f-w-400 book-details-row">{{ book.description }}</p>
                                         <p class="m-b-10 f-w-600">Author:</p>
                                         <p class="book-details-row"><a
-                                                href="{% url 'author_books' slug=book.author.slug %}">{{ book.author }}</a>
+                                                href="{% url 'author_books' slug=book.author.slug %}"
+                                                class="author-link">{{ book.author }}</a>
                                         </p>
                                         <p class="m-b-10 f-w-600">Genre:</p>
                                         <p>
@@ -50,6 +50,7 @@
                                                 {{ genre.genre_name }}{% if not forloop.last %}, {% endif %}
                                             {% endfor %}
                                         </p>
+                                        <br>
 
                                         {% if request.user.is_authenticated %}
                                             {% if book not in request.user.shelf.books.all %}

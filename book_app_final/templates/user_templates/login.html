@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 
+{% block body_id %}login-page{% endblock %}
+
 {% block content %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="hidden" name="next" value="{{ next }}"/>
-        <button type="submit">Login</button>
-    </form>
+    <div class="header-center">
+        <h1 class="page-title">Log in</h1>
+    </div>
+    <div class="login-container">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="hidden" name="next" value="{{ next }}"/>
+            <button type="submit" class="btn custom-btn">Login</button>
+        </form>
+    </div>
 {% endblock %}

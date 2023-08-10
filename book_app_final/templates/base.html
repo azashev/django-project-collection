@@ -54,8 +54,8 @@
                                 Profile
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{% url 'profile' %}">View Profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'user_logout' %}">Logout</a></li>
+                                <li><a class="dropdown-item dropdown-link" href="{% url 'profile' %}">View Profile</a></li>
+                                <li><a class="dropdown-item dropdown-link" href="{% url 'user_logout' %}">Logout</a></li>
                             </ul>
                         </li>
                         <span class="logged-in-user">{{ user }}</span>
@@ -73,8 +73,10 @@
     </nav>
 </header>
 
-{% block content %}
-{% endblock %}
+<div class="content-wrapper">
+    {% block content %}
+    {% endblock %}
+</div>
 
 <script src="{% static 'js/main.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -83,5 +85,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
         crossorigin="anonymous"></script>
+<footer class="footer">
+    <div class="footer-content">
+        &copy; Developed by Alexander Zashev
+    </div>
+</footer>
 </body>
 </html>

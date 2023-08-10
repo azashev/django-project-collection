@@ -6,6 +6,11 @@
     <div class="header-center">
         <h1 class="page-title">Add a book</h1>
     </div>
+    {% if error_message %}
+        <div class="messages">
+            {{ error_message }}
+        </div>
+    {% endif %}
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">

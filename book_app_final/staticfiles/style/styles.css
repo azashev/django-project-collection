@@ -3,6 +3,10 @@
     height: 150px;
 }
 
+.content-wrapper {
+    min-height: calc(100vh - 16px);
+}
+
 .profile-image {
     width: 150px;
     height: 150px;
@@ -11,11 +15,25 @@
 .logged-in-user {
     margin-top: 11px;
     margin-left: 10px;
-    color: #2d2c31;
+    color: #fff;
 }
 
 .messages {
     text-align: center;
+}
+
+.dropdown-link {
+    color: #333 !important;
+}
+
+.dropdown-link:hover {
+    background-color: #333;
+    color: #fff !important;
+}
+
+.dropdown-item:active {
+    background-color: #333;
+    color: #fff;
 }
 
 /*Buttons*/
@@ -65,7 +83,6 @@
     border-radius: 15%;
     border: 1px solid #fff;
     cursor: pointer;
-    opacity: 0.8;
     transition: opacity 0.3s;
     z-index: 1000;
 }
@@ -103,6 +120,31 @@
 }
 
 
+/*Pagination*/
+.pagination .page-link {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #252525;
+    border-color: #b2b2b2;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #fff;
+    background-color: #333;
+    border-color: #fff;
+}
+
+.pagination .page-link:hover {
+    background-color: #A9A9A9FF;
+    color: #000F;
+}
+
+
+
 /*Homepage*/
 
 body {
@@ -119,30 +161,29 @@ body {
 }
 
 #my-nav {
-    background-color: #80ff00 !important;
+    background-color: #1e3a56 !important;
 }
 
 #navbarNav > ul a {
     font-size: 18px;
-    color: #2d2c31;
+    color: #fff;
     font-weight: bold;
     transition: color 0.3s ease-in-out;
 }
 
 #navbarNav > ul a:hover {
-    color: #5f5e69;
+    color: #707070;
 }
 
 
 /*Catalogue*/
 
 #catalogue-page {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/catalogue.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('../images/catalogue.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    height: 100vh;
 }
 
 .header-center {
@@ -197,10 +238,10 @@ body {
 
 .page-title {
     margin-top: 3rem;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
     font-family: 'Open Sans', sans-serif;
-    color: #6cd900;
-    text-shadow: 2px 2px 4px #888888;
+    color: #fff;
+    text-shadow: 2px 2px 4px #1e3a56;
 }
 
 select {
@@ -215,12 +256,16 @@ select {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100vh;
 }
 
 #logo-txt {
     font-size: 24px;
     font-weight: bold;
+    color: #fff;
+}
+
+#logo-txt:hover {
+    color: #707070;
 }
 
 
@@ -254,8 +299,8 @@ select {
 }
 
 .bg-c-lite-green {
-    background: -webkit-gradient(linear, left top, right top, from(#5ec200), to(#2d2c31));
-    background: linear-gradient(to left, #2d2c31, #5ec200);
+    background: -webkit-gradient(linear, left top, right top, from(#1e3a56), to(#2d2c31));
+    background: linear-gradient(to left, #2d2c31, #1e3a56);
 }
 
 .user-profile {
@@ -334,7 +379,6 @@ h6 {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100vh;
 }
 
 .col-xl-6 {
@@ -366,7 +410,6 @@ h6 {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100vh;
 }
 
 .password-change-card {
@@ -404,13 +447,16 @@ h6 {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
-    height: 100vh;
 }
 
 
 /*My Books*/
 #my-books-page {
-    background: linear-gradient(to right, #2d2c31, #787781);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/my-books2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 .col-md-4 .my-books-card {
@@ -443,7 +489,6 @@ h6 {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    height: 100vh;
 }
 
 .add-book-form {
@@ -458,7 +503,6 @@ h6 {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    min-height: 100vh;
 }
 
 .cb-book {
@@ -511,6 +555,7 @@ h6 {
 .card .edit-book-card-body .book-edit-holder {
     width: 80%;
     margin: 0 auto;
+    margin-bottom: 20px !important;
 }
 
 .edit-book-card {
@@ -528,7 +573,6 @@ h6 {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
-    height: 100vh;
 }
 
 
@@ -581,7 +625,10 @@ a.author-link:hover {
 
 /*Shelf page*/
 #shelf-page {
-    background: linear-gradient(to right, #2d2c31, #787781);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('../images/catalogue.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 /*Delete book from shelf*/
@@ -590,14 +637,12 @@ a.author-link:hover {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
-    height: 100vh;
 }
 
 .confirm-delete-container {
     margin-top: 20px;
     text-align: center;
 }
-
 
 
 /*Change password*/
@@ -619,3 +664,105 @@ a.author-link:hover {
     margin: 0;
 }
 
+
+/*Reviews*/
+
+
+/*Delete review*/
+#delete-review-page {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.8)), url('../images/delete-book.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+}
+
+
+/*Login page*/
+#login-page {
+    background-image: linear-gradient(rgba(91, 91, 91, 0.7), rgba(0, 0, 0, 0.9)), url('../images/login.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    text-align: center;
+}
+
+
+/*Register user*/
+#register-user-page {
+    background-image: linear-gradient(rgb(0, 0, 0), rgba(255, 255, 255, 0)), url('../images/sign-up.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
+.center-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.signup-form-wrapper {
+    margin-bottom: 20px;
+}
+
+.signup-form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.signup-form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.signup-form-group .signup-form-help-text {
+    font-size: 0.8em;
+    color: #fff;
+    margin-top: 4px;
+}
+
+.signup-form-group .signup-field-error {
+    color: #ee2a2a;
+    font-size: 0.9em;
+    margin-top: 4px;
+}
+
+.signup-form-group input,
+.signup-form-group select,
+.signup-form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.signup-btn-wrapper {
+    text-align: center;
+}
+
+
+/*Footer*/
+.footer {
+    background-color: black;
+    color: white;
+    font-size: 13px;
+    padding: 8px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}

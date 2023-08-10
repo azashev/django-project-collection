@@ -16,6 +16,13 @@ class BookForm(forms.ModelForm):
             'book_image': forms.URLInput(attrs={'placeholder': 'Enter URL'}),
         }
 
+    # Validation
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if not title.strip():
+            raise forms.ValidationError("Title cannot be only whitespace.")
+        return title
+
 
 class CatalogueFilterForm(forms.Form):
     author = forms.ModelChoiceField(
@@ -35,4 +42,13 @@ class CatalogueFilterForm(forms.Form):
             ('author', 'Author')
         ],
         required=False
+    )
+
+    search = forms.CharField(
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': 'Search for a book...'
+            })
     )

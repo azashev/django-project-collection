@@ -8,22 +8,21 @@
     <div class="header-center">
         <h1 class="page-title">Book Catalogue</h1>
 
-        {#  Filtering  #}
+        {# Filtering #}
         <form method="GET">
             {{ form.author.label_tag }}
             {{ form.author }}
-
             {{ form.genre.label_tag }}
             {{ form.genre }}
-
             {{ form.sort_by.label_tag }}
             {{ form.sort_by }}
-
+            {{ form.search.label_tag }}
+            {{ form.search }}
             <button type="submit" class="back-btn">Apply</button>
         </form>
     </div>
 
-    {#  Catalogue  #}
+    {# Catalogue #}
     <div class="container">
         <button onclick="goBack()" class="back-btn">Back</button>
         <div class="row">
@@ -61,5 +60,60 @@
                 </div>
             {% endfor %}
             </div>
+
+        {# Bootstrap Pagination #}
+        <div class="mt-4 d-flex justify-content-center">
+            <ul class="pagination">
+                {% if books.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ books.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;&laquo;</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo;</a>
+                    </li>
+                {% endif %}
+
+                {% for i in books.paginator.page_range %}
+                    {% if books.number == i %}
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link" href="#">{{ i }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if books.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ books.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ books.paginator.num_pages }}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&raquo;&raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 {% endblock %}

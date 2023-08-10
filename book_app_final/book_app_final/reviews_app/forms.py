@@ -10,3 +10,10 @@ class ReviewForm(forms.ModelForm):
         labels = {
             'review_text': 'Review',
         }
+
+    # Validation
+    def clean_review_text(self):
+        review_text = self.cleaned_data.get('review_text')
+        if review_text and not review_text.strip():
+            raise forms.ValidationError("Review cannot be only whitespace.")
+        return review_text
