@@ -2,25 +2,21 @@ import os
 from pathlib import Path
 
 from django.urls import reverse_lazy
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+# SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', None)
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-SECRET_KEY = os.getenv('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(' ')
 
 # Application definition
 
@@ -79,11 +75,11 @@ WSGI_APPLICATION = 'book_app_final.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': "django.db.backends.postgresql",
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': os.getenv('DATABASE_PORT'),
+        'NAME': os.getenv('DATABASE_NAME', None),
+        'USER': os.getenv('DATABASE_USER', None),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', None),
+        'HOST': os.getenv('DATABASE_HOST', None),
+        'PORT': os.getenv('DATABASE_PORT', None),
     }
 }
 

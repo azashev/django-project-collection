@@ -49,6 +49,6 @@ class CatalogueFilterForm(forms.Form):
         required=False,
         widget=forms.TextInput(
             attrs={
-                'placeholder': 'Search for a book...'
+                'placeholder': 'Search for book'
             })
     )
