@@ -2,6 +2,8 @@
 
 {% block body_id %}delete-book-page{% endblock %}
 
+{% block title %} Delete Book {% endblock %}
+
 {% block content %}
     <div class="confirm-delete-container">
         <form action="{% url 'book_delete' pk=book.pk %}" method="POST" class="mb-3">
