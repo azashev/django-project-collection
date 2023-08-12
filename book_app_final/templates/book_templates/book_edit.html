@@ -18,7 +18,7 @@
                 <div class="card edit-book-card">
                     <div class="edit-book-card-body">
                         <div class="text-center mb-4 book-edit-book-image">
-                            <img src="{{ book.book_image }}" alt="{{ book.title }}" class="img-fluid"
+                            <img src="{{ book.book_image }}" alt="{{ book.title }}" class="img-fluid book-image"
                                  style="max-width: 200px;">
                         </div>
                         <form action="{% url 'book_edit' pk=book.pk %}" method="POST">
