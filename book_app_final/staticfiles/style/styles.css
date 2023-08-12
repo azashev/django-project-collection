@@ -495,6 +495,10 @@ h6 {
     text-align: center;
 }
 
+#id_genres {
+    height: 150px;
+}
+
 
 /*Book details*/
 
